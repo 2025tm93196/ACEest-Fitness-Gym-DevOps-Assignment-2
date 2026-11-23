@@ -25,10 +25,15 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                echo 'SonarQube analysis will be configured separately.'
+    steps {
+        script {
+            def scannerHome = tool 'SonarScanner'
+            withSonarQubeEnv('SonarQube') {
+                sh "${scannerHome}/bin/sonar-scanner"
             }
         }
+    }
+}
 
         stage('Docker Build') {
             steps {
